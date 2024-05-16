@@ -1,4 +1,4 @@
-# GPT Copy Helper
+# [GPT Copy Helper ](https://marketplace.visualstudio.com/items?itemName=Abdelazizmahdy.gpt-copy-helper)
 
 GPT Copy Helper is a Visual Studio Code extension that allows you to copy the content of a selected file or each subfolder and file within a selected folder to the clipboard, with minimized content size. This helps reduce the amount of text and tokens needed, making it easier to manage large amounts of text data.
 
