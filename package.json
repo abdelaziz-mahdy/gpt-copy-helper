@@ -3,6 +3,7 @@
   "displayName": "GPT Copy Helper",
   "description": "Copies content of selected file or each subfolder and file to clipboard, minimizing content size.",
   "version": "0.0.1",
+  "publisher": "Abdelazizmahdy",
   "engines": {
     "vscode": "^1.50.0"
   },
