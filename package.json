@@ -9,10 +9,6 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [
-    "onCommand:gptCopyHelper.copyFolderContent",
-    "onCommand:gptCopyHelper.copyFileContent"
-  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
@@ -30,12 +26,12 @@
         {
           "command": "gptCopyHelper.copyFolderContent",
           "when": "explorerResourceIsFolder",
-          "group": "navigation@999"
+          "group": "2_rename@gptCopyHelper"
         },
         {
           "command": "gptCopyHelper.copyFileContent",
-          "when": "explorerResourceIsFile",
-          "group": "navigation@999"
+          "when": "!explorerResourceIsFolder",
+          "group": "2_rename@gptCopyHelper"
         }
       ]
     }
