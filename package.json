@@ -9,7 +9,12 @@
   "categories": [
     "Other"
   ],
-  "main": "./out/extension.js",
+  "repository":"https://github.com/abdelaziz-mahdy/gpt-copy-helper",
+  "main": "./out/extension.js",  
+  "activationEvents": [
+    "onCommand:gptCopyHelper.copyFolderContent",
+    "onCommand:gptCopyHelper.copyFileContent"
+  ],
   "contributes": {
     "commands": [
       {
