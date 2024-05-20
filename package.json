@@ -41,7 +41,7 @@
                 },
                 {
                     "command": "gptCopyHelper.copyFileContent",
-                    "when": "resourceLangId != ''", 
+                    "when": "!explorerResourceIsFolder", 
                     "group": "2_rename@gptCopyHelper"
                 }
             ]
