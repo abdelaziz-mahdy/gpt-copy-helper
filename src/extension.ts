@@ -25,8 +25,8 @@ export function activate(context: vscode.ExtensionContext) {
             if (uri) {
                 const filePath = uri.fsPath;
                 const fileContent = await fs.promises.readFile(filePath, "utf-8");
+                const relativePath = vscode.workspace.asRelativePath(filePath);
                 const minimizedContent = minimizeContent(fileContent, filePath);
-                const relativePath = path.relative(vscode.workspace.workspaceFolders?.[0].uri.fsPath || '', filePath);
                 await vscode.env.clipboard.writeText(`${relativePath}\n${minimizedContent}`);
                 vscode.window.showInformationMessage(
                     "File content copied to clipboard!"
@@ -45,8 +45,8 @@ export function activate(context: vscode.ExtensionContext) {
                 for (const uri of uris) {
                     const filePath = uri.fsPath;
                     const fileContent = await fs.promises.readFile(filePath, "utf-8");
+                    const relativePath = vscode.workspace.asRelativePath(filePath);
                     const minimizedContent = minimizeContent(fileContent, filePath);
-                    const relativePath = path.relative(vscode.workspace.workspaceFolders?.[0].uri.fsPath || '', filePath);
                     combinedContent += `${relativePath}\n${minimizedContent}\n\n`;
                 }
                 await vscode.env.clipboard.writeText(combinedContent.trim());
@@ -81,7 +81,7 @@ async function readFolderContent(folderPath: string, baseFolderPath: string): Pr
             content += await readFolderContent(filePath, baseFolderPath);
         } else {
             const fileContent = await fs.promises.readFile(filePath, "utf-8");
-            const relativePath = path.relative(baseFolderPath, filePath);
+            const relativePath = vscode.workspace.asRelativePath(filePath);
             content += `${relativePath}\n${minimizeContent(fileContent, filePath)}\n\n`;
         }
     }
@@ -92,7 +92,7 @@ async function readFolderContent(folderPath: string, baseFolderPath: string): Pr
 function minimizeContent(content: string, filePath: string): string {
     const excludeExtensions = vscode.workspace.getConfiguration('gptCopyHelper').get('excludeMinimizeExtensions', []);
     const minimizeAllFiles = vscode.workspace.getConfiguration('gptCopyHelper').get('minimizeAllFiles', true);
-    
+
     if (!minimizeAllFiles || excludeExtensions.some((ext: string) => filePath.endsWith(ext))) {
         return content;
     }

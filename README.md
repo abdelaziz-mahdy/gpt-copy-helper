@@ -46,5 +46,3 @@ Press `F5` to open a new VSCode window with the extension loaded. Use the comman
 ## License
 
 MIT
-
-
