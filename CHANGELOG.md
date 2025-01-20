@@ -2,7 +2,11 @@
 
 All notable changes to the "gpt-copy-helper" extension will be documented in this file.
 
-## [0.1.2] - 2025-01-20
+## [0.1.4] - 2025-01-20
+
+- Fix running error due to missing dep
+
+## [0.1.3] - 2025-01-20
 
 - **Added support for respecting `.gitignore` files.**
 - **Introduced a new setting `gptCopyHelper.respectGitIgnore` (default: `true`) to enable/disable `.gitignore` handling.**
