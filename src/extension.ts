@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import * as fs from "fs";
 import * as path from "path";
+import ignore from "ignore";
 
 export function activate(context: vscode.ExtensionContext) {
   let copyFolderDisposable = vscode.commands.registerCommand(
@@ -53,14 +54,36 @@ async function readFolderContent(
   const excludePatterns = vscode.workspace
     .getConfiguration("gptCopyHelper")
     .get("excludeFiles", []);
+  const respectGitIgnore = vscode.workspace
+    .getConfiguration("gptCopyHelper")
+    .get("respectGitIgnore", true); // Get the setting
+
   let content = "";
   const files = await fs.promises.readdir(folderPath);
+
+  // Create an ignore filter (if enabled)
+  const ig = ignore();
+  if (respectGitIgnore) {
+    const gitIgnorePath = path.join(baseFolderPath, ".gitignore");
+    if (fs.existsSync(gitIgnorePath)) {
+      const gitIgnoreContent = await fs.promises.readFile(
+        gitIgnorePath,
+        "utf-8"
+      );
+      ig.add(gitIgnoreContent);
+    }
+  }
 
   for (const file of files) {
     const filePath = path.join(folderPath, file);
     const stat = await fs.promises.stat(filePath);
+    const relativePath = path.relative(baseFolderPath, filePath);
 
-    if (excludePatterns.some((pattern: string) => filePath.includes(pattern))) {
+    // Check if ignored by .gitignore or excludePatterns
+    if (
+      (respectGitIgnore && ig.ignores(relativePath)) ||
+      excludePatterns.some((pattern: string) => filePath.includes(pattern))
+    ) {
       continue;
     }
 
@@ -68,8 +91,8 @@ async function readFolderContent(
       content += await readFolderContent(filePath, baseFolderPath);
     } else {
       const fileContent = await fs.promises.readFile(filePath, "utf-8");
-      const relativePath = vscode.workspace.asRelativePath(filePath);
-      content += `${relativePath}\n${minimizeContent(
+      const relativeToWorkspace = vscode.workspace.asRelativePath(filePath);
+      content += `${relativeToWorkspace}\n${minimizeContent(
         fileContent,
         filePath
       )}\n\n`;
