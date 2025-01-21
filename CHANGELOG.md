@@ -2,6 +2,10 @@
 
 All notable changes to the "gpt-copy-helper" extension will be documented in this file.
 
+## [0.1.6] - 2025-01-20
+
+- Refactoring code for cleaner approach and cleaner error messages
+
 ## [0.1.5] - 2025-01-20
 
 - Fix running error due to missing dep
