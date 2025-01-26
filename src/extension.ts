@@ -79,7 +79,6 @@ async function readFolderContent(
 
   return await readDirectory(workspaceFolder, folderPath, ig, excludePatterns);
 }
-
 async function readDirectory(
   workspaceFolder: vscode.WorkspaceFolder,
   dirPath: string,
@@ -93,13 +92,13 @@ async function readDirectory(
 
   for (const [entryName, entryType] of entries) {
     const entryPath = vscode.Uri.joinPath(vscode.Uri.file(dirPath), entryName);
-    const relativePath = path.posix.relative(
-      workspaceFolder.uri.path,
-      entryPath.path
-    );
+    const relativePath = vscode.workspace.asRelativePath(entryPath);
+
+    // Check if the path is under the workspace folder
+    const isInsideWorkspace = relativePath.indexOf("..") !== 0;
 
     if (
-      ig?.ignores(relativePath) ||
+      (isInsideWorkspace && ig?.ignores(relativePath)) || // Only use ignore if inside workspace
       excludePatterns.some((pattern) => relativePath.includes(pattern))
     ) {
       console.log(`Ignoring ${relativePath}`);
@@ -130,7 +129,6 @@ async function readDirectory(
 
   return content;
 }
-
 async function loadGitIgnore(
   respectGitIgnore: boolean,
   workspaceFolder: vscode.WorkspaceFolder

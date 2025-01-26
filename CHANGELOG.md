@@ -2,6 +2,10 @@
 
 All notable changes to the "gpt-copy-helper" extension will be documented in this file.
 
+## [0.1.7] - 2025-01-26
+
+- Fix: specific relative bug
+
 ## [0.1.6] - 2025-01-20
 
 - Refactoring code for cleaner approach and cleaner error messages
